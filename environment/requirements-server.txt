@@ -1,0 +1,17 @@
+# Server system python3 (3.10.12): server Python analyses and all server panels
+matplotlib==3.10.8
+matplotlib-venn==1.1.2
+numpy==2.2.6
+pandas==2.3.3
+scipy==1.15.3
+statsmodels==0.14.6
+seaborn==0.13.2
+openpyxl==3.1.5
+pysam==0.23.3
+gprofiler-official==1.0.0
+# conda env clipper3 (Python 3.8.15) for 05_sequence_features_and_motifs/analysis_motif_enrichment.py:
+#   pysam==0.23.3 numpy==1.24.4 pandas==2.0.3 scipy==1.10.1
+# miniconda3 base (Python 3.13.11) for 04_stress_granule_enrichment/sg_permutation_test_lenmatched.py:
+#   numpy==2.4.2 pandas==3.0.1 scipy==1.17.0
+# conda env rmats: rMATS (rmats-turbo) 4.3.0, Python 3.11.0
+# MAJIQ 3.0.19 in a separate virtualenv (academic licence required)

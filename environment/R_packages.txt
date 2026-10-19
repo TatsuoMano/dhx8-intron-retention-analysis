@@ -1,0 +1,13 @@
+# R 4.3.2 on the server (queried 2026-10-19)
+DESeq2 1.42.1
+limma 3.58.1
+edgeR 4.0.16
+fgsea 1.26.0
+transite 1.20.1
+GenomicFeatures 1.54.4
+Biostrings 2.70.3
+Rsamtools 2.18.0
+data.table 1.18.2.1
+ggplot2 4.0.2
+Matrix 1.6.0
+# Command-line tools: STAR 2.7.10a, Subread featureCounts 2.0.3, samtools 1.13, Trimmomatic 0.39

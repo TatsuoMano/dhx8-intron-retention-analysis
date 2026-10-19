@@ -1,0 +1,25 @@
+name	type	rep	accession	size_gb	outfile	for_experiment
+PRPF8_HepG2	KD	1	ENCFF673NPW	3.07260184	/mnt/HDD2/unified_results/encode_rbp_kd/bams/PRPF8_HepG2_rep1_ENCFF673NPW.bam	
+PRPF8_HepG2	KD	2	ENCFF124KBD	3.205354666	/mnt/HDD2/unified_results/encode_rbp_kd/bams/PRPF8_HepG2_rep2_ENCFF124KBD.bam	
+Control_HepG2_ENCSR856ZRV	Control	1	ENCFF528NWG	3.212551601	/mnt/HDD2/unified_results/encode_rbp_kd/bams/Control_HepG2_ENCSR856ZRV_rep1_ENCFF528NWG.bam	PRPF8_HepG2
+Control_HepG2_ENCSR856ZRV	Control	2	ENCFF317QYL	3.566954042	/mnt/HDD2/unified_results/encode_rbp_kd/bams/Control_HepG2_ENCSR856ZRV_rep2_ENCFF317QYL.bam	PRPF8_HepG2
+SNRNP200_HepG2	KD	1	ENCFF287XNM	4.694805	/mnt/HDD2/unified_results/encode_rbp_kd/bams/SNRNP200_HepG2_rep1_ENCFF287XNM.bam	
+SNRNP200_HepG2	KD	2	ENCFF433UMI	3.112123032	/mnt/HDD2/unified_results/encode_rbp_kd/bams/SNRNP200_HepG2_rep2_ENCFF433UMI.bam	
+Control_HepG2_ENCSR104ABF	Control	1	ENCFF710YBQ	3.19601	/mnt/HDD2/unified_results/encode_rbp_kd/bams/Control_HepG2_ENCSR104ABF_rep1_ENCFF710YBQ.bam	SNRNP200_HepG2
+Control_HepG2_ENCSR104ABF	Control	2	ENCFF834QZT	3.347684396	/mnt/HDD2/unified_results/encode_rbp_kd/bams/Control_HepG2_ENCSR104ABF_rep2_ENCFF834QZT.bam	SNRNP200_HepG2
+EFTUD2_HepG2	KD	1	ENCFF473RIO	3.886189877	/mnt/HDD2/unified_results/encode_rbp_kd/bams/EFTUD2_HepG2_rep1_ENCFF473RIO.bam	
+EFTUD2_HepG2	KD	2	ENCFF009UNT	3.861446532	/mnt/HDD2/unified_results/encode_rbp_kd/bams/EFTUD2_HepG2_rep2_ENCFF009UNT.bam	
+Control_HepG2_ENCSR689PHN	Control	1	ENCFF862DEF	2.340942243	/mnt/HDD2/unified_results/encode_rbp_kd/bams/Control_HepG2_ENCSR689PHN_rep1_ENCFF862DEF.bam	EFTUD2_HepG2
+Control_HepG2_ENCSR689PHN	Control	2	ENCFF178XWW	2.613975436	/mnt/HDD2/unified_results/encode_rbp_kd/bams/Control_HepG2_ENCSR689PHN_rep2_ENCFF178XWW.bam	EFTUD2_HepG2
+PRPF6_HepG2	KD	1	ENCFF283DDL	4.332375764	/mnt/HDD2/unified_results/encode_rbp_kd/bams/PRPF6_HepG2_rep1_ENCFF283DDL.bam	
+PRPF6_HepG2	KD	2	ENCFF966GXE	4.16717151	/mnt/HDD2/unified_results/encode_rbp_kd/bams/PRPF6_HepG2_rep2_ENCFF966GXE.bam	
+Control_HepG2_ENCSR491FOC	Control	1	ENCFF492EZP	4.332720704	/mnt/HDD2/unified_results/encode_rbp_kd/bams/Control_HepG2_ENCSR491FOC_rep1_ENCFF492EZP.bam	PRPF6_HepG2
+Control_HepG2_ENCSR491FOC	Control	2	ENCFF970TMY	3.904776125	/mnt/HDD2/unified_results/encode_rbp_kd/bams/Control_HepG2_ENCSR491FOC_rep2_ENCFF970TMY.bam	PRPF6_HepG2
+RBFOX2_K562	KD	2	ENCFF702GQW	2.633902556	/mnt/HDD2/unified_results/encode_rbp_kd/bams/RBFOX2_K562_rep2_ENCFF702GQW.bam	
+RBFOX2_K562	KD	1	ENCFF762GIC	3.267958846	/mnt/HDD2/unified_results/encode_rbp_kd/bams/RBFOX2_K562_rep1_ENCFF762GIC.bam	
+Control_K562_ENCSR667PLJ	Control	1	ENCFF214SQV	2.70800698	/mnt/HDD2/unified_results/encode_rbp_kd/bams/Control_K562_ENCSR667PLJ_rep1_ENCFF214SQV.bam	RBFOX2_K562
+Control_K562_ENCSR667PLJ	Control	2	ENCFF125PXK	2.343469933	/mnt/HDD2/unified_results/encode_rbp_kd/bams/Control_K562_ENCSR667PLJ_rep2_ENCFF125PXK.bam	RBFOX2_K562
+RBM39_K562	KD	1	ENCFF648RHR	6.153281104	/mnt/HDD2/unified_results/encode_rbp_kd/bams/RBM39_K562_rep1_ENCFF648RHR.bam	
+RBM39_K562	KD	2	ENCFF333UZU	6.027006127	/mnt/HDD2/unified_results/encode_rbp_kd/bams/RBM39_K562_rep2_ENCFF333UZU.bam	
+Control_K562_ENCSR164MUK	Control	2	ENCFF384QBC	7.524025893	/mnt/HDD2/unified_results/encode_rbp_kd/bams/Control_K562_ENCSR164MUK_rep2_ENCFF384QBC.bam	RBM39_K562
+Control_K562_ENCSR164MUK	Control	1	ENCFF393WNP	5.608423563	/mnt/HDD2/unified_results/encode_rbp_kd/bams/Control_K562_ENCSR164MUK_rep1_ENCFF393WNP.bam	RBM39_K562

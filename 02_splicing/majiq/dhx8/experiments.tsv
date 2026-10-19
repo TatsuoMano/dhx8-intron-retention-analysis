@@ -1,0 +1,7 @@
+sample_id	path	group	strandness
+siCont_1	/mnt/HDD2/Sakai_RNA-seq/output/mapping/siCont_1_Aligned.sortedByCoord.out.bam	Control	REVERSE
+siCont_2	/mnt/HDD2/Sakai_RNA-seq/output/mapping/siCont_2_Aligned.sortedByCoord.out.bam	Control	REVERSE
+siCont_3	/mnt/HDD2/Sakai_RNA-seq/output/mapping/siCont_3_Aligned.sortedByCoord.out.bam	Control	REVERSE
+siDHX8_1	/mnt/HDD2/Sakai_RNA-seq/output/mapping/siDHX8_1_Aligned.sortedByCoord.out.bam	DHX8_KD	REVERSE
+siDHX8_2	/mnt/HDD2/Sakai_RNA-seq/output/mapping/siDHX8_2_Aligned.sortedByCoord.out.bam	DHX8_KD	REVERSE
+siDHX8_3	/mnt/HDD2/Sakai_RNA-seq/output/mapping/siDHX8_3_Aligned.sortedByCoord.out.bam	DHX8_KD	REVERSE

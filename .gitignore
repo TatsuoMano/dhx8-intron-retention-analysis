@@ -1,0 +1,40 @@
+# Data and results are not part of this repository (see README, Data)
+*.bam
+*.bai
+*.sam
+*.fq
+*.fq.gz
+*.fastq
+*.fastq.gz
+*.sra
+*.zarr/
+*.majiq
+*.sj
+*.rds
+*.h5ad
+*.xlsx
+*.xls
+*.pzfx
+*_counts.txt
+*_counts.txt.summary
+*.MATS.*.txt
+results/
+data/
+panels/
+figures/
+_provenance/
+*.pdf
+*.png
+*.tif
+*.prov.json
+*.log
+*.nohup
+# Python / R / OS
+__pycache__/
+*.pyc
+.Rhistory
+.RData
+.DS_Store
+# credentials and licences
+*.lic
+.env
