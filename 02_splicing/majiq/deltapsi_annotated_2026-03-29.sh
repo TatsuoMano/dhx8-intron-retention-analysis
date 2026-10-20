@@ -23,10 +23,20 @@
 #   majiq psi-coverage ... gse126543/TDP43_positive_psicov.zarr build/SRR8571937.sorted.sj ... --nthreads 32  (7 TDP-43(+))
 # Group order: -psi1 TDP43_negative, -psi2 TDP43_positive.
 #
-# Usage:  deltapsi_annotated_2026-03-29.sh          run
-#         deltapsi_annotated_2026-03-29.sh --check  compare the recorded command of each output
-#                                                   with the command below (reads headers only)
-MODE=${1:-run}
+# Usage:  deltapsi_annotated_2026-03-29.sh [--check]  compare the recorded command of each output
+#                                                     with the command below (the default; reads
+#                                                     headers only)
+#         deltapsi_annotated_2026-03-29.sh --run      run the four deltapsi commands (overwrites
+#                                                     the deltapsi_annotated.tsv files)
+# Needs bash 4 or later (the check uses an associative array, declare -A).
+if (( BASH_VERSINFO[0] < 4 )); then
+    echo "bash 4 or later is required (this is $BASH_VERSION)" >&2; exit 2
+fi
+MODE=${1:---check}
+case "$MODE" in
+    --check|--run) ;;
+    *) echo "usage: $0 [--check | --run]" >&2; exit 2 ;;
+esac
 
 if [ "$MODE" = "--check" ]; then
     B=/mnt/HDD2/unified_results/majiq

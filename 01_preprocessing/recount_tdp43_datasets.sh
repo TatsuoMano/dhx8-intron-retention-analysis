@@ -15,10 +15,20 @@
 # for argument, the "Command:" line that featureCounts v2.0.3 wrote into the header of the count
 # file it produced; ./recount_tdp43_datasets.sh --check compares the two without running anything.
 #
-# Usage:  recount_tdp43_datasets.sh            run the six featureCounts commands
-#         recount_tdp43_datasets.sh --check    compare each command with the header of its output
+# Usage:  recount_tdp43_datasets.sh [--check]  compare each command with the header of its output
+#                                              (the default; reads the count-file headers only)
+#         recount_tdp43_datasets.sh --run      run the six featureCounts commands (overwrites the
+#                                              count files)
+# Needs bash 4.3 or later (the check uses name references, declare -n).
 set -uo pipefail
-MODE=${1:-run}
+if (( BASH_VERSINFO[0] < 4 || (BASH_VERSINFO[0] == 4 && BASH_VERSINFO[1] < 3) )); then
+    echo "bash 4.3 or later is required (this is $BASH_VERSION)" >&2; exit 2
+fi
+MODE=${1:---check}
+case "$MODE" in
+    --check|--run) ;;
+    *) echo "usage: $0 [--check | --run]" >&2; exit 2 ;;
+esac
 
 # ---------------- GSE65973 (dNLS-TDP-43 mouse cortex), single-end, -s 1 ----------------
 G65=/mnt/HDD2/TDP43_comparison/GSE65973

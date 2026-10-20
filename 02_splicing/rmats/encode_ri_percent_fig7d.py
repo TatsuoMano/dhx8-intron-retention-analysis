@@ -16,12 +16,12 @@ run_remaining.sh, which has no summary block). run_encode_splicing.sh is kept un
 run; this script is the computation behind the values written in
 07_figure_panels/local/_fig7b_encode_v2.py.
 
-Result of the 2026-10-20 run: the SE and RI counts of all six factors and the RI% of SNRNP200,
-PRPF6, RBFOX2 and RBM39 reproduce the panel. For PRPF8 and EFTUD2 the RI% rounds to 35.1 and
-24.5 (1306/3726 = 35.05%, 546/2233 = 24.45%) against 35.0 and 24.4 in the panel and the text. The
-last column shows that all six printed values are obtained when the A3SS and A5SS events with
-|IncLevelDifference| exactly 0.1 are kept; this is only a candidate explanation of the 0.1-point
-difference, not a recovered record of how the panel values were computed.
+Result of the 2026-10-20 run: the SE and RI counts and the RI% of all six factors reproduce the
+panel. The panel and the text first printed 35.0 (PRPF8) and 24.4 (EFTUD2); the computed values are
+1306/3726 = 35.05% and 546/2233 = 24.45%, and the panel (_fig7b_encode_v2.py) and the Results were
+corrected to 35.1 and 24.5 on 2026-10-20. The last column (A3SS and A5SS events with
+|IncLevelDifference| exactly 0.1 kept) gives the earlier 35.0 and 24.4; it is printed only as a
+candidate explanation of the earlier values, not as a recovered record of how they were computed.
 
 Run on the server (read-only, streamed):
     ssh ncnp-linux 'python3 -' < 02_splicing/rmats/encode_ri_percent_fig7d.py
@@ -31,7 +31,7 @@ import pandas as pd
 BASE = "/mnt/HDD2/unified_results/encode_rbp_kd/splicing"
 FACTORS = ["PRPF8", "EFTUD2", "SNRNP200", "PRPF6", "RBFOX2", "RBM39"]
 # values written in _fig7b_encode_v2.py (SE, RI, RI%)
-PANEL = {"PRPF8": (1756, 1306, 35.0), "EFTUD2": (1173, 546, 24.4), "SNRNP200": (1900, 729, 20.9),
+PANEL = {"PRPF8": (1756, 1306, 35.1), "EFTUD2": (1173, 546, 24.5), "SNRNP200": (1900, 729, 20.9),
          "PRPF6": (737, 308, 22.4), "RBFOX2": (648, 250, 22.1), "RBM39": (5016, 1601, 19.3)}
 
 
