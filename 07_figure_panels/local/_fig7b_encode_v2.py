@@ -6,9 +6,14 @@ import matplotlib.pyplot as plt
 plt.rcParams["font.family"]="Arial"; plt.rcParams["font.sans-serif"]=["Arial"]
 plt.rcParams["pdf.fonttype"]=42; plt.rcParams["ps.fonttype"]=42
 OUT="fig7b_encode_comparison_v2"
+# Values: rMATS JCEC events with FDR < 0.05 and |IncLevelDifference| > 0.1 in the ENCODE knockdowns
+# (ncnp-linux:/mnt/HDD2/unified_results/encode_rbp_kd/splicing/rmats_<factor>/); RI% = RI / (SE + A3SS + A5SS + RI),
+# MXE excluded from the denominator. Computed by 02_splicing/rmats/encode_ri_percent_fig7d.py in the code release
+# (run 2026-10-20, streamed read-only to ncnp-linux). All SE and RI counts reproduced; PRPF8 and EFTUD2 RI% corrected
+# 2026-10-20 from 35.0% and 24.4% (earlier hard-coded values) to 35.1% (1306/3726 = 35.05%) and 24.5% (546/2233 = 24.45%).
 cols=["Factor","Complex","Cell","SE","RI","RI%"]
-rows=[["PRPF8","C*/U5 core","HepG2","1,756","1,306","35.0%"],
-      ["EFTUD2","C*/U5","HepG2","1,173","546","24.4%"],
+rows=[["PRPF8","C*/U5 core","HepG2","1,756","1,306","35.1%"],
+      ["EFTUD2","C*/U5","HepG2","1,173","546","24.5%"],
       ["SNRNP200","C*/U5","HepG2","1,900","729","20.9%"],
       ["PRPF6","tri-snRNP","HepG2","737","308","22.4%"],
       ["RBFOX2","RBP (control)","K562","648","250","22.1%"],
