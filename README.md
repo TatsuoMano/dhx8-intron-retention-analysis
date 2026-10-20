@@ -40,11 +40,13 @@ Paths are relative to the repository root. "Inputs" names the files as they are 
 | Strandedness check, Supplementary Table S1 | `01_preprocessing/strandedness/build_strand_table.sh`, `parse_strand_table.py` | featureCounts summaries for `-s 0/1/2` |
 | GSE65973 download and STAR alignment | `01_preprocessing/GSE65973/01_download.sh`, `02_star_mapping.sh`, `auto_pipeline.sh` | GEO GSE65973, `sample_sheet.tsv` |
 | GSE126543 download, STAR 2-pass alignment, counts | `01_preprocessing/GSE126543/sorted_nuclei_GSE126543_pipeline.sh` (steps 1–3) | GEO GSE126543 (SRA), `sample_sheet.tsv` |
+| featureCounts recounts of GSE65973 (`-s 1`; gene, intron, flanking exon) and GSE126543 (`-s 0`; gene, intron, flanking exon) | `01_preprocessing/recount_tdp43_datasets.sh` (reconstructed; `--check` compares each command with the header of its count file) | dataset BAMs, `mm10.ncbiRefSeq.gtf`, `hg38.ncbiRefSeq.gtf`, intron and exon SAF files |
 | ENCODE knockdown BAMs | `01_preprocessing/encode/download_all.sh` | ENCODE accessions in `bam_metadata.tsv` |
 | DESeq2, DHX8 KD and GSE65973; Fig. 3A input | `03_expression_and_pathways/deseq2_mouse.R` | `counts_s2/gene_counts.txt`; GSE65973 `counts_s1/gene_counts.txt` |
 | DESeq2, GSE126543 | `03_expression_and_pathways/deseq2_unified.R` (GSE126543 section) | `sorted_nuclei_GSE126543/counts/gene_counts.txt` |
 | DESeq2 table in CSV layout for downstream scripts | `03_expression_and_pathways/deseq2_tsv_to_csv.sh` (reconstructed, see below) | `deseq2_dhx8_kd_vs_ctrl.tsv` |
 | fgsea on the Wald statistic (C2:CP, GO:BP, Hallmark); Fig. 3B, Supplementary Fig. S8A, S8B | `03_expression_and_pathways/fgsea_unified.R` | `deseq2_*.tsv`, MSigDB GMT files |
+| Supplementary Table S2 (phase membership with DHX8 KD log2FC, padj, direction) | `03_expression_and_pathways/build_table_s2.py` (reconstructed) | `spliceosome_phase_genesets.gmt`, `deseq2_dhx8_kd_vs_ctrl.tsv` |
 | Spliceosome-phase GSEA (Supplementary Table S2 phases); Fig. 7B NES | `03_expression_and_pathways/fgsea_spliceosome_phase.R` | `deseq2_results.csv`, `spliceosome_phase_genesets.gmt` (included) |
 | Fig. 3A DEG volcano | `07_figure_panels/server/_fig3a_volcano_sq.py` | `deseq2_dhx8_kd_vs_ctrl.tsv` |
 | Fig. 3B C2:CP bar plot | `07_figure_panels/server/_fig3b_c2cp_v5.py` | `gsea/fgsea_c2cp_dhx8.tsv` |
@@ -61,17 +63,22 @@ Paths are relative to the repository root. "Inputs" names the files as they are 
 | Intron coordinates and length joined to the IR tables | `02_splicing/intron_retention/join_ir_meta.py` (reconstructed), called by `04_stress_granule_enrichment/_v2_sg_fix.sh`, `_v2_sg_fix2.sh` | `limma_*_dhx8_s2.tsv`, `intron_metadata.tsv` |
 | limma IR for GSE65973 and GSE126543 (0 retained introns; Fig. 4B) | `02_splicing/intron_retention/limma_ir_mouse.R` (GSE65973), `limma_ir_unified.R` (GSE126543; hg38 features from `step1_hg38_intron_saf.py`) | intron and exon counts of each dataset |
 | rMATS, DHX8 KD (SE 4,204, A3SS 599, A5SS 458; Fig. 4B, Fig. 5B) | `02_splicing/rmats/_v2_rmats_dhx8.sh` | DHX8 KD BAMs, `mm10.ncbiRefSeq.gtf` |
+| SE direction: 3,596 of 4,204 significant SE events (86%) with control PSI > KD PSI, exact binomial P = 10^−512.4 | `02_splicing/rmats/se_direction_binomial.py` | `rmats/dhx8_v2/SE.MATS.JCEC.txt`, `summary.txt` |
 | rMATS, GSE65973 and GSE126543 (Fig. 4B) | `02_splicing/rmats/rmats_tdp43_datasets_2026-03-28.sh` (reconstructed) | dataset BAMs, sample sheets |
-| rMATS, ENCODE spliceosome-factor knockdowns (Fig. 7D) | `02_splicing/rmats/run_encode_splicing.sh`, `run_remaining.sh` (RBFOX2, RBM39) | ENCODE BAMs, Ensembl GRCh38.109 GTF |
+| rMATS, ENCODE spliceosome-factor knockdowns (Fig. 7D) | `02_splicing/rmats/run_encode_splicing.sh`, `run_remaining.sh` (RBFOX2, RBM39); the summary block at the end of `run_encode_splicing.sh` filters on fixed awk columns that are not FDR and IncLevelDifference in these files and was not used (see `encode_ri_percent_fig7d.py`) | ENCODE BAMs, Ensembl GRCh38.109 GTF |
+| Fig. 7D SE and RI counts and RI% = RI/(SE + A3SS + A5SS + RI), FDR < 0.05 and \|IncLevelDifference\| > 0.1, MXE excluded | `02_splicing/rmats/encode_ri_percent_fig7d.py` | `encode_rbp_kd/splicing/rmats_<factor>/*.MATS.JCEC.txt` |
 | MAJIQ build, psi-coverage, deltapsi for DHX8 KD (22 de novo junctions, 12 CE; Fig. 4B CE row) | `02_splicing/majiq/_v2_majiq_dhx8.sh` (build), `_v2_motif_majiq.sh` (MAJIQ block), `analysis_deltapsi_integration.py` | `majiq/dhx8/experiments.tsv`, GENCODE vM25 GFF3 |
-| MAJIQ for GSE126543 and GSE65973 | `02_splicing/majiq/run_majiq_robust.sh` | `majiq/<dataset>/experiments.tsv`, GENCODE v38 / vM25 GFF3 |
+| MAJIQ for GSE126543 and GSE65973 (build, psi-coverage) | `02_splicing/majiq/run_majiq_robust.sh` | `majiq/<dataset>/experiments.tsv`, GENCODE v38 / vM25 GFF3 |
+| MAJIQ deltapsi with splice-graph annotation for GSE126543, GSE65973 (and GSE27218): `deltapsi_annotated.tsv` | `02_splicing/majiq/deltapsi_annotated_2026-03-29.sh` (reconstructed; `--check` compares with the command recorded in each output) | `<dataset>_psicov.zarr`, `build/splicegraph.zarr` |
 | Supplementary Fig. S10A, S10B CE candidates and mirror-method FDR | `02_splicing/majiq/_bespoke_ce_fdr_arial.py` | `majiq/all_datasets_significant_events.tsv` |
 | Supplementary Fig. S9A–S9E sashimi plots (Smarcc2, Sf1, Dpp7, Rpl4, Ccdc71) | `02_splicing/sashimi/analysis_sashimi_dhx8_events.py` | DHX8 KD BAMs (`samtools depth`), STAR `SJ.out.tab` |
 | Supplementary Fig. S9F UNC13A cryptic exon (GSE126543) | `02_splicing/sashimi/sashimi_ce_gse126543_recovered.py` | GSE126543 BAMs, `hg38.ncbiRefSeq.gtf` |
-| Fig. 4B integrated splicing summary table | `07_figure_panels/local/_fig4e_summary_v2.py` | values written in the script, from the rMATS, limma and MAJIQ outputs above |
+| Fig. 4B event counts: rMATS SE/A3SS/A5SS (and MXE, RI) at FDR < 0.05, limma retained and released introns and genes, MAJIQ de novo junctions, CE candidates and strong CEs, for the three datasets | `02_splicing/count_events_fig4b.py` | rMATS `*.MATS.JCEC.txt`, `limma_ir_results_*.tsv`, `majiq/<dataset>/deltapsi_annotated.tsv` |
+| Fig. 4B integrated splicing summary table | `07_figure_panels/local/_fig4e_summary_v2.py` | values written in the script, from `count_events_fig4b.py` |
 | Fig. 5A IR volcano | `07_figure_panels/server/_fig5a_ir_volcano.py` | `limma_ir_results_dhx8.tsv` |
 | Fig. 5B RNA quantity by event type (Welch t-test, Bonferroni x3, Cohen's d) | `07_figure_panels/server/_fig5_rnaquant_v7_v2.py` (the statistics are computed in this script) | `deseq2_dhx8_kd_vs_ctrl.tsv`, `limma_retained_dhx8_s2.tsv`, `rmats/dhx8_v2/{SE,A3SS,A5SS}.MATS.JCEC.txt` |
-| Fig. 7D ENCODE RI proportion table | `07_figure_panels/local/_fig7b_encode_v2.py` | values written in the script, from the ENCODE rMATS outputs |
+| 95% CI of Cohen's d for Fig. 5B (IR 0.179–0.300; large-sample analytic interval, a percentile bootstrap is printed for comparison) | `02_splicing/ir_rna_level_effect_size.py` | as Fig. 5B |
+| Fig. 7D ENCODE RI proportion table | `07_figure_panels/local/_fig7b_encode_v2.py` | values written in the script, from `encode_ri_percent_fig7d.py` |
 
 ### Stress granule enrichment
 
@@ -91,6 +98,7 @@ Paths are relative to the repository root. "Inputs" names the files as they are 
 |---|---|---|
 | RBP motif density (14 motifs, Mann–Whitney U, Bonferroni), 4/5/6-mer chi-squared, GC and G-run of 1,258 retained vs 3x length-matched introns (KS D = 0.011) | `05_sequence_features_and_motifs/analysis_motif_enrichment.py` | `limma_retained_dhx8.tsv`, `limma_ir_results_dhx8.tsv`, mm10 FASTA |
 | Supplementary Fig. S13 motif, GC and length panels | `07_figure_panels/local/replot_s12_v1style.py` | `motif_enrichment_results.tsv`, `s12_per_intron_features_v2.tsv`, `s12_length_arrays_v2.tsv`, `s12_ks_v2.txt` |
+| Transite foreground and background tables: one coding RefSeq transcript per gene (NM_ preferred, then XM_; longest by total exon length); DEG-UP log2FC > 0.5 set (1,545), strict DEG-UP log2FC > 1 (459 rows, 451 with a 3′ UTR), MEF-expressed background (11,972; 11,900 with a 3′ UTR) | `05_sequence_features_and_motifs/transite/build_transite_tables.py` (reconstructed) | `mm10.ncbiRefSeq.gtf`, `deseq2_dhx8_kd_vs_ctrl.tsv`, `mm10_3utr_seqs.rds` |
 | mm10 3′ UTR sequences for Transite | `05_sequence_features_and_motifs/transite/extract_3utr.R` | `mm10.ncbiRefSeq.gtf`, mm10 FASTA |
 | Transite hexamer TSMA, strict DEG-UP (n = 451) vs MEF-expressed background and vs all mm10 3′ UTRs | `05_sequence_features_and_motifs/transite/run_tsma_strict.R` | `deseq2_dhx8_kd_vs_ctrl.tsv`, `foreground_up_only_v2.tsv`, `background_all_expressed_v2.tsv`, `mm10_3utr_seqs.rds` |
 | Transite length-matched background (KS D = 0.016, P > 0.99) | `05_sequence_features_and_motifs/transite/run_tsma_lenmatch.R` | `foreground_up_strict_v2.tsv`, `background_all_expressed_v2.tsv`, `mm10_3utr_seqs.rds` |
@@ -144,7 +152,7 @@ The scripts insert `~/bin` into `sys.path` to import `figprov`; set `PYTHONPATH`
 
 ## Reconstructed files
 
-Five steps were run as interactive commands or from `/tmp` and were not kept as files. Their code was recovered verbatim from the session logs or from the wrapper that wrote them, and is marked `RECONSTRUCTED` in its header:
+Nine steps were run as interactive commands or from `/tmp` and were not kept as files. Their code was recovered verbatim from the session logs or from the wrapper that wrote them, and is marked `RECONSTRUCTED` in its header:
 
 | File | Origin |
 |---|---|
@@ -152,7 +160,28 @@ Five steps were run as interactive commands or from `/tmp` and were not kept as 
 | `02_splicing/rmats/rmats_tdp43_datasets_2026-03-28.sh` | interactive rMATS commands of 2026-03-28 (Telegram calls removed) |
 | `03_expression_and_pathways/deseq2_tsv_to_csv.sh` | awk one-liner of 2026-07-06 |
 | `04_stress_granule_enrichment/gocc_v2.py` | `/tmp/gocc_v2.py` of 2026-07-07 |
+| `01_preprocessing/recount_tdp43_datasets.sh` | interactive featureCounts commands of 2026-03-27 (GSE126543) and 2026-03-28 (GSE65973); equal to the command lines in the count-file headers |
+| `02_splicing/majiq/deltapsi_annotated_2026-03-29.sh` | interactive MAJIQ deltapsi command of 2026-03-29; equal to the command recorded in each `deltapsi_annotated.tsv` |
+| `03_expression_and_pathways/build_table_s2.py` | `/tmp/build_s3.py` of 2026-06-03 (output paths turned into arguments) |
+| `05_sequence_features_and_motifs/transite/build_transite_tables.py` | `/tmp/gen_transite_tables2.py` of 2026-07-08 and the strict and 3′ UTR-mapped subsets of 2026-07-13 |
 | `06_statistics_wetlab/brown_forsythe_eye.py` | written for this release; recomputes the Brown–Forsythe P values reported in the Methods (line #2 P = 9.9 × 10⁻⁶) |
+
+## Reproduction checks (2026-10-20)
+
+The scripts added on 2026-10-20 were run against the server data without writing to it (`ssh ncnp-linux 'python3 -' < script.py`, `ssh ncnp-linux 'bash -s -- --check' < script.sh`). Printed numbers are compared with the submitted text (revision 3). Where they differ, the difference is listed as it is; the text and the tables were not changed here.
+
+| Script | Printed | In the text | Result |
+|---|---|---|---|
+| `02_splicing/count_events_fig4b.py` | rMATS SE/A3SS/A5SS/MXE: DHX8 KD 4,204/599/458/450, GSE65973 204/42/36/28, GSE126543 667/170/86/177; limma: DHX8 KD 36,190 tested, 1,258 retained introns in 1,150 genes, 75 released; GSE65973 and GSE126543 0 retained; MAJIQ de novo/CE/strong CE: DHX8 KD 22/12/1 (Ccdc71), GSE126543 160/24/9, GSE65973 2/0/0 | same counts (Fig. 4B, Results, Fig. 5A legend) | reproduced, except: (a) the Results say GSE65973 "yielded no detectable de novo junctions"; 2 significant de novo junctions are present (neither is a CE candidate); (b) Ccdc71 "dPSI = +0.52": the current DHX8 KD output gives dpsi_mean 0.525 and a raw PSI difference of 0.527 (0.52 is the older `ce_empirical_fdr_results.tsv` value, 0.519); (c) UNC13A "dPSI = 0.62" and STMN2 "dPSI = 0.65" equal the TDP-43(−) PSI (0.616, 0.652), not dPSI (dpsi_mean 0.603 and 0.640; raw PSI difference 0.607 and 0.642) |
+| `02_splicing/rmats/se_direction_binomial.py` | 3,596 of 4,204 (85.5%) in the skipping direction; two-sided exact binomial P = 10^−512.4 (one-sided 10^−512.7) | 86%, P < 10⁻⁵¹² | reproduced |
+| `02_splicing/ir_rna_level_effect_size.py` | IR n = 1,149 vs 11,680, mean log2FC +0.156, d = +0.240, Bonferroni P = 1.9 × 10⁻¹⁹, analytic 95% CI 0.179–0.300 (bootstrap 0.189–0.289); SE d = +0.023, P = 0.60; A3SS/A5SS d = −0.020, P = 1.00 | d = +0.240, 95% CI 0.179–0.300, P = 1.9 × 10⁻¹⁹; SE +0.023, 0.60; A3SS/A5SS −0.020, 1.00 | reproduced; the reported CI is the large-sample analytic interval |
+| `02_splicing/rmats/encode_ri_percent_fig7d.py` | SE/RI/RI%: PRPF8 1,756/1,306/35.05, EFTUD2 1,173/546/24.45, SNRNP200 1,900/729/20.87, PRPF6 737/308/22.38, RBFOX2 648/250/22.10, RBM39 5,016/1,601/19.33 | panel and Results: 35.0, 24.4, 20.9, 22.4, 22.1, 19.3 | SE and RI counts reproduced for all six; RI% for PRPF8 and EFTUD2 rounds to 35.1 and 24.5, 0.1 point above the printed values (all six printed values are obtained if A3SS and A5SS events with \|IncLevelDifference\| exactly 0.1 are kept; not confirmed as the original procedure) |
+| `03_expression_and_pathways/build_table_s2.py` | 164 gene–phase rows, 163 genes, phases 41/28/24/10/20/41; with the current DESeq2 (v2): UP 122, ns 33, DOWN 8, NA 1 | Table S2 as submitted (UP 118, ns 37, DOWN 8, NA 1) | the gene and phase columns are reproduced. The log2FC, padj and direction columns of the submitted table (`Manuscript/Tables/SupTableS2/Supplementary_Table_S2.tsv` and the revision-3 xlsx) are byte-identical to a build from the pre-correction DESeq2 (`/mnt/HDD2/_v1_corrupt_snapshot_20260706/downstream_results/deseq2_dhx8_kd_vs_ctrl.tsv`, the siCont_2 library before its correction) and differ from the current DESeq2 in 163 of 164 rows |
+| `05_sequence_features_and_motifs/transite/build_transite_tables.py` | 652 strict DEG-UP genes → 459 with a coding transcript → 451 with a 3′ UTR; background 12,829 genes → 11,972 coding → 11,900 with a 3′ UTR | n = 451; background "all genes expressed in the same libraries" | all six tables byte-identical to the server and Dropbox copies; the background used is the 11,900 expressed genes with a coding transcript and a 3′ UTR |
+| `01_preprocessing/recount_tdp43_datasets.sh --check` | six commands equal to the featureCounts header of their output | | reproduced (commands only; featureCounts was not re-run, since the server is read-only here) |
+| `02_splicing/majiq/deltapsi_annotated_2026-03-29.sh --check` | commands equal to the command recorded in `deltapsi_annotated.tsv` of GSE126543, GSE65973 and GSE27218 | | reproduced (commands only) |
+
+The Methods describe the MAJIQ significance filter as P(\|dPSI\| > 0.2) > 0.95; the code (`analysis_deltapsi_integration.py`) uses probability_changing ≥ 0.95 together with \|dpsi_mean\| ≥ 0.1. Both filters give the same de novo, CE and strong-CE counts in all three datasets.
 
 ## Software
 
