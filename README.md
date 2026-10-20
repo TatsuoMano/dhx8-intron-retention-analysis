@@ -18,7 +18,7 @@ The scripts are the versions that produced the reported results and the figure p
 | `04_stress_granule_enrichment/` | Fisher overlap of IR genes and DEG-UP genes with SG transcriptomes and proteomes, Fig. 6F table, length x expression matched permutation test, g:Profiler GO:CC | server |
 | `05_sequence_features_and_motifs/` | RBP motif density, k-mer, GC and G-run analysis of retained introns; Transite 3′ UTR k-mer analysis | server |
 | `06_statistics_wetlab/` | Recomputation of the statistics of the GraphPad Prism graphs, per-cell analysis of Supplementary Fig. S2B, Drosophila eye 2 x 2 Welch–James analysis, Brown–Forsythe test, fly-level sensitivity analysis | local (macOS) |
-| `07_figure_panels/` | Plotting scripts for the computational panels, the rendering wrapper `regen_runner.py` and the exact render commands (`server/regen_server_v3.sh`, `local/regen_local_v3.sh`, `server/rerun_s9_2026-10-01.sh`) | server and local |
+| `07_figure_panels/` | Plotting scripts for the computational panels, the rendering wrapper `regen_runner.py` and the exact render commands (`server/regen_server_v3.sh`, `local/regen_local_v3.sh`, `server/rerun_s9_2026-10-01.sh`, `server/rerun_s9_2026-10-20.sh`) | server and local |
 | `lib/figprov.py` | Figure provenance helper imported by the plotting scripts and by `regen_runner.py` (writes PDF + PNG and a JSON sidecar with input and script hashes) | both |
 | `environment/` | Software versions of the environments the scripts ran in | |
 
@@ -138,7 +138,7 @@ Three values printed on the assembled figures differ from the original Prism out
 Every computational panel was rendered by running its plotting script unchanged through `07_figure_panels/regen_runner.py`. The wrapper intercepts `savefig`, resizes the selected figure to its final size in the layout, sets Arial, clamps text to at least 7 pt (numeric ticks 6 pt), applies the listed text edits and saves the panel with `lib/figprov.py` (PDF, PNG and a provenance sidecar). It does no analysis. The exact commands, with all arguments, are in
 
 - `07_figure_panels/server/regen_server_v3.sh` (server panels: Fig. 3A, 3B, 5A, 5B, 6A–6D, S8, S9, S10, S11, S12A, S12B);
-- `07_figure_panels/server/rerun_s9_2026-10-01.sh` (final re-render of Supplementary Fig. S9A–S9E);
+- `07_figure_panels/server/rerun_s9_2026-10-01.sh` (re-render of Supplementary Fig. S9A–S9E for revision 2) and `07_figure_panels/server/rerun_s9_2026-10-20.sh` (the final re-render: the same command with the S9E title corrected to MAJIQ dPSI = +0.53 by `--text-replace`);
 - `07_figure_panels/local/regen_local_v3.sh` (local panels: Fig. 3C, 3D, 4B, 6E, 6F, 7B, 7C, 7D, 8A, S1, S12C, S13, S14B, S14C).
 
 Example:
@@ -186,7 +186,7 @@ The scripts added on 2026-10-20 were run against the server data without writing
 Corrected in revision 3 after the first run of these checks:
 
 - Supplementary Table S2. The log2FC, padj and direction columns of the earlier table were byte-identical to a build from the DESeq2 table before the siCont_2 correction (`/mnt/HDD2/_v1_corrupt_snapshot_20260706/downstream_results/deseq2_dhx8_kd_vs_ctrl.tsv`; UP 118, ns 37, DOWN 8, NA 1). The table was rebuilt from the current DESeq2; Ppie, Syf2, Prpf18 and Rbm8a moved from ns to UP. The `Fig7B_subset` column was added.
-- MAJIQ dPSI. Ccdc71 +0.52 became +0.53 (Results, Supplementary Fig. S9E legend). UNC13A 0.62 and STMN2 0.65, which were the TDP-43(−) PSI (0.616 and 0.652), became the dPSI 0.60 and 0.64.
+- MAJIQ dPSI. Ccdc71 +0.52 became +0.53 (Results, Supplementary Fig. S9E legend, and the S9E panel title, which `analysis_sashimi_dhx8_events.py` writes as +0.52 and `rerun_s9_2026-10-20.sh` replaces at render time). UNC13A 0.62 and STMN2 0.65, which were the TDP-43(−) PSI (0.616 and 0.652), became the dPSI 0.60 and 0.64.
 - GSE65973. "No detectable de novo junctions" became two significant de novo junctions (Ppfia2 and Cnksr2), neither of which meets the CE criteria.
 - Fig. 7D and Results. PRPF8 35.0% and EFTUD2 24.4% became 35.1% and 24.5% (the panel values in `_fig7b_encode_v2.py` were corrected and the panel re-rendered).
 - Methods. The MAJIQ significance rule now includes the mean |dPSI| ≥ 0.1 floor that the code applies (the code takes probability_changing ≥ 0.95, with MAJIQ's default changing threshold of 0.2; the de novo, CE and strong-CE counts are the same with P > 0.95 alone); the Transite background, the Cohen's d interval, the tested-intron rule and the feature counting (featureCounts, not htseq-count) are described as in the code; the software versions are those listed below.
